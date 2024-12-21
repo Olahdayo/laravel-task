@@ -85,4 +85,14 @@ class TrainingController extends Controller
             ], 500);
         }
     }
+
+    public function getTrainingCenters()
+    {
+        try {
+            $centers = TrainingCenter::all(); // Fetch all training centers
+            return response()->json(['success' => true, 'data' => $centers], 200);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
 }

@@ -23,9 +23,9 @@ export default {
     deleteTrainee(id) {
         return apiClient.delete(`/trainees/${id}`);
     },
-    // getTrainingCenters() {
-    //     return apiClient.get('/training-centers');
-    // },
+    getTrainingCenters() {
+        return apiClient.get('/training-centers');
+    },
 };
 
 

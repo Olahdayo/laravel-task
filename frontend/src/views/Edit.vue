@@ -9,7 +9,7 @@
         <form v-else @submit.prevent="updateTrainee">
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" v-model="trainee.name" required>
+                <input type="text" class="form-control" id="name" v-model="trainee.name" required />
             </div>
             <div class="mb-3">
                 <label for="skill" class="form-label">Skill Level</label>
@@ -39,9 +39,7 @@ export default {
                 name: '',
                 skill: '',
                 bio: '',
-                training_center: {
-                    description: ''
-                }
+                training_center: ''
             },
             loading: true 
         };
@@ -63,7 +61,7 @@ export default {
         updateTrainee() {
             const traineeId = this.$route.params.id; 
             api.updateTrainee(traineeId, this.trainee)
-                .then(() => {
+                 .then(() => {
                     alert("Trainee updated successfully.");
                     this.$router.push('/AllTrainees'); 
                 })

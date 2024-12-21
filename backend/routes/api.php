@@ -10,5 +10,6 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::apiResource('trainees', TrainingController::class);
+Route::get('/training-centers', [TrainingController::class, 'getTrainingCenters']);
 
 // http://localhost:8000/api/trainees
