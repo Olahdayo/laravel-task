@@ -16,8 +16,10 @@
             </div>
         </div>
 
-        <div v-else>
-            <p>Loading trainee details...</p>
+       <div v-else class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
     </div>
 </template>

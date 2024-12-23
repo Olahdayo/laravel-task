@@ -1,9 +1,13 @@
 <template>
     <div class="container mt-5">
+    
+
         <h1>Edit Trainee</h1>
 
         <div v-if="loading" class="text-center">
-            <p>Loading trainee details...</p>
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
 
         <form v-else @submit.prevent="updateTrainee">
