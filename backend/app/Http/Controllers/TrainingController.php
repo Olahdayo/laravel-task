@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Trainee;
 use App\Models\TrainingCenter;
+use Illuminate\Support\Facades\Log;
 
 class TrainingController extends Controller
 {
@@ -33,18 +34,20 @@ class TrainingController extends Controller
 
     public function store(Request $request)
     {
+        Log::info('Create Request Data:', $request->all());
+
         try {
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'skill' => 'required|integer|min:0|max:100',
-                'bio' => 'required|string|min:20|max:100',
+                'bio' => 'required|string|min:20|max:255',
                 'training_center_id' => 'required|exists:training_centers,id',
             ]);
 
             $trainee = Trainee::create($validatedData);
             return response()->json(['success' => true, 'data' => $trainee], 201);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 400);
+            return response()->json(['success' => false, 'message' => 'Failed to create trainee: ' . $e->getMessage()], 400);
         }
     }
 

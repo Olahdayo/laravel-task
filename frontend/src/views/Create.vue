@@ -8,7 +8,7 @@
             </div>
             <div class="mb-3">
                 <label for="skillLevel" class="form-label">Skill Level (1-100):</label>
-                <input type="number" class="form-control" v-model="trainee.skill" required />
+                <input type="number" class="form-control" v-model="trainee.skill" min="1" max="100" required />
             </div>
             <div class="mb-3">
                 <label for="bio" class="form-label">Bio:</label>
@@ -61,11 +61,22 @@ export default {
             }
         },
         async submitForm() {
-            console.log('Trainee data:', this.trainee);
+            // Trim the data before submission
+            this.trainee.name = this.trainee.name.trim();
+            this.trainee.bio = this.trainee.bio.trim();
+
+            // Basic validation
+            if (!this.trainee.name || !this.trainee.skill || !this.trainee.bio || !this.trainee.training_center_id) {
+                this.message = 'Please fill in all required fields.';
+                this.success = false;
+                return;
+            }
+
             try {
-                const response = await this.createTrainee(this.trainee);
+                const response = await api.createTrainee(this.trainee);
+                console.log('API Response:', response);
                 if (response && response.data) {
-                    this.message = `Trainee created successfully: ${response.data.name}`;
+                    this.message = `Trainee created successfully`;
                     this.success = true;
                 } else {
                     this.message = 'Trainee created, but no response data received.';
@@ -73,6 +84,7 @@ export default {
                 }
                 this.resetForm();
             } catch (error) {
+                console.error('Error creating trainee:', error.response ? error.response.data : error.message);
                 if (error.response && error.response.data) {
                     this.message = `Error creating trainee: ${error.response.data.message}`;
                 } else {
@@ -81,9 +93,7 @@ export default {
                 this.success = false;
             }
         },
-        createTrainee(data) {
-            return api.createTrainee('/trainees', data);
-        },
+      
         resetForm() {
             this.trainee.name = '';
             this.trainee.skill = null;
