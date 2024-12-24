@@ -25,7 +25,12 @@
             </div>
             <div class="mb-3">
                 <label for="trainingCenter" class="form-label">Training Center</label>
-                <input type="text" class="form-control" id="trainingCenter" v-model="trainee.training_center.name" required>
+                 <select class="form-control" v-model="trainee.training_center_id" required>
+                    <option value="" disabled selected>Select a Training Center</option>
+                    <option v-for="center in trainingCenters" :key="center.id" :value="center.id">
+                        {{ center.name }}
+                    </option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Update Trainee</button>
             <router-link to="/AllTrainees" class="btn btn-secondary">Cancel</router-link>
@@ -43,12 +48,25 @@ export default {
                 name: '',
                 skill: '',
                 bio: '',
-                training_center: ''
+                training_center_id: ''
             },
+            trainingCenters: [],
             loading: true 
         };
     },
+    created() {
+        this.fetchTrainingCenters();
+    },
     methods: {
+         async fetchTrainingCenters() {
+            try {
+                const response = await api.getTrainingCenters();
+                this.trainingCenters = response.data.data;
+            } catch (error) {
+                console.error("Error fetching training centers:", error);
+            }
+        },
+
         getTraineeDetails() {
             const traineeId = this.$route.params.id; 
             api.getTraineeById(traineeId)
